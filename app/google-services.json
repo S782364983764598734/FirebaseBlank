@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1010094249375",
+    "project_id": "fir-blank-bb322",
+    "storage_bucket": "fir-blank-bb322.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010094249375:android:67312930944a14633959aa",
+        "android_client_info": {
+          "package_name": "com.example.firebaseblank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1010094249375-pps5vq4rp85ss8h3ei6om67cq2karbf7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU0Vdbu8d_Hyq-6jxqcj4ww1cVEjNaZpQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1010094249375-pps5vq4rp85ss8h3ei6om67cq2karbf7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

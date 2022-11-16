@@ -2,8 +2,10 @@ package com.example.firebaseblank;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,11 +38,13 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
     String name = "Eric";
     List<String> draftList;
-    EditText num = (EditText)findViewById(R.id.editTextNumber);
 
     public void draftFunction(View view)
     {
-        String value = num.getText().toString();
+        EditText num = (EditText)findViewById(R.id.editText);
+        TextView player = (TextView)findViewById(R.id.textView);
+        myList.add(playerList.get(Integer.parseInt(num.getText().toString())));
+        System.out.println(myList.get(0));
     }
 
 

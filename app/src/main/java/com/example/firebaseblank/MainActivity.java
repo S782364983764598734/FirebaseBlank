@@ -26,25 +26,44 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    List<String> myList;
+    //List<String> myList;
     List<String> playerList =  Arrays.asList("Beal","Booker", "Murray");
+    List<String> draftList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        myList = new ArrayList<>();
+        //myList = new ArrayList<>();
+        draftList = new ArrayList<>();
     }
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
     String name = "Eric";
-    List<String> draftList;
 
     public void draftFunction(View view)
     {
-        EditText num = (EditText)findViewById(R.id.editText);
-        TextView player = (TextView)findViewById(R.id.textView);
-        myList.add(playerList.get(Integer.parseInt(num.getText().toString())));
-        System.out.println(myList.get(0));
+        EditText choice = (EditText)findViewById(R.id.editText);
+        int num = Integer.parseInt(choice.getText().toString());
+
+        if(num >= 0 && num < playerList.size())
+        {
+            if(!playerList.get(Integer.parseInt(choice.getText().toString())).equals("Picked"))
+            {
+                TextView player = (TextView)findViewById(R.id.textView);
+                draftList.add(playerList.get(Integer.parseInt(choice.getText().toString())));
+                System.out.println(draftList);
+                playerList.set(num,"Picked");
+                System.out.println(playerList);
+                addRoom(view);
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"That player Has already been picked",Toast.LENGTH_LONG).show();
+            }
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"Please Select a Value within the List",Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -66,12 +85,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void addRoom(View view)
     {
-        for(int i = 0; i < playerList.size(); i++)
-        {
-            myList.add(playerList.get(i));
-        }
-        Toast.makeText(getApplicationContext(),"List is " + myList.size(),Toast.LENGTH_LONG).show();
-        myRef.child("Room 2").child("Player List").setValue(myList)
+        Toast.makeText(getApplicationContext(),"List is " + playerList.size(),Toast.LENGTH_LONG).show();
+        myRef.child("Room 2").child("Player List").setValue(playerList)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

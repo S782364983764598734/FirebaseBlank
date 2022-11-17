@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     //List<String> myList;
     List<String> playerList =  Arrays.asList("Beal","Booker", "Murray");
     List<String> draftList;
-
+    int roomNum = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,23 +66,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-    public void newRoom(View view)
-    {
-        myRef.child("Room 2").child("Player List").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data", task.getException());
-                }
-                else {
-                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
-                }
-            }
-        });
-    }
-
     public void addRoom(View view)
     {
         Toast.makeText(getApplicationContext(),"List is " + playerList.size(),Toast.LENGTH_LONG).show();
@@ -98,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-
+    public void joinRoom(View view){
+        myRef.child("Room " + roomNum).child("Player List").setValue(playerList);
+        
+    }
 
 }

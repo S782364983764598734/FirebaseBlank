@@ -27,9 +27,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     //List<String> myList;
-    List<String> playerList =  Arrays.asList("Beal","Booker", "Murray");
+    List<String> playerList = Arrays.asList("Beal", "Booker", "Murray");
     List<String> draftList;
     int roomNum = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,53 +38,57 @@ public class MainActivity extends AppCompatActivity {
         //myList = new ArrayList<>();
         draftList = new ArrayList<>();
     }
+
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
-    String name = "Eric";
 
-    public void draftFunction(View view)
-    {
-        EditText choice = (EditText)findViewById(R.id.editText);
+    public void draftFunction(View view) {
+        EditText choice = (EditText) findViewById(R.id.editText);
         int num = Integer.parseInt(choice.getText().toString());
 
-        if(num >= 0 && num < playerList.size())
-        {
-            if(!playerList.get(Integer.parseInt(choice.getText().toString())).equals("Picked"))
-            {
-                TextView player = (TextView)findViewById(R.id.textView);
+        if (num >= 0 && num < playerList.size()) {
+            if (!playerList.get(Integer.parseInt(choice.getText().toString())).equals("Picked")) {
+                TextView player = (TextView) findViewById(R.id.textView);
                 draftList.add(playerList.get(Integer.parseInt(choice.getText().toString())));
                 System.out.println(draftList);
-                playerList.set(num,"Picked");
+                playerList.set(num, "Picked");
                 System.out.println(playerList);
                 addRoom(view);
+            } else {
+                Toast.makeText(getApplicationContext(), "That player Has already been picked", Toast.LENGTH_LONG).show();
             }
-            else{
-                Toast.makeText(getApplicationContext(),"That player Has already been picked",Toast.LENGTH_LONG).show();
-            }
-        }
-        else{
-            Toast.makeText(getApplicationContext(),"Please Select a Value within the List",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Please Select a Value within the List", Toast.LENGTH_LONG).show();
         }
     }
 
-    public void addRoom(View view)
-    {
-        Toast.makeText(getApplicationContext(),"List is " + playerList.size(),Toast.LENGTH_LONG).show();
+    public void addRoom(View view) {
+        Toast.makeText(getApplicationContext(), "List is " + playerList.size(), Toast.LENGTH_LONG).show();
         myRef.child("Room 2").child("Player List").setValue(playerList)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful())
-                        {
+                        if (task.isSuccessful()) {
                             //Toast.makeText(getApplicationContext(),"List is uploaded successfully",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
     }
 
-    public void joinRoom(View view){
+    public void joinRoom(View view) {
         myRef.child("Room " + roomNum).child("Player List").setValue(playerList);
-        
+
+    }
+
+    public void room1(View view) {
+        roomNum = 1;
+    }
+    public void room2(View view)
+    {
+        roomNum = 2;
+    }
+    public void room3(View view){
+        roomNum = 3;
     }
 
 }

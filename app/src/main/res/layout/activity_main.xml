@@ -53,25 +53,38 @@
         android:id="@+id/room1butt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="room 1"
         android:onClick="room1"
-        tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="401dp" />
+        android:text="room 1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/room2butt"
+        app:layout_constraintHorizontal_bias="0.391"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.582" />
+
     <Button
         android:id="@+id/room2butt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="room 2"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="36dp"
         android:onClick="room2"
-        tools:layout_editor_absoluteX="162dp"
-        tools:layout_editor_absoluteY="401dp" />
+        android:text="room 2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/room3butt"
+        app:layout_constraintTop_toBottomOf="@+id/button3"
+        app:layout_constraintVertical_bias="0.0" />
+
     <Button
         android:id="@+id/room3butt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="room 3"
+        android:layout_marginEnd="16dp"
         android:onClick="room3"
-        tools:layout_editor_absoluteX="291dp"
-        tools:layout_editor_absoluteY="401dp" />
+        android:text="room 3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.582" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

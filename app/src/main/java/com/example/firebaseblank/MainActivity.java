@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     //List<String> myList;
-    List<String> playerList = Arrays.asList("Beal", "Booker", "Murray");
+    List<String> playerList = Arrays.asList("Beal", "Booker", "Murray","Spongebob","Sandy Cheeks","Walter");
     List<String> draftList;
     int roomNum = 0;
 
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(draftList);
                 playerList.set(num, "Picked");
                 System.out.println(playerList);
-                addRoom(view);
+                joinRoom(view);
             } else {
                 Toast.makeText(getApplicationContext(), "That player Has already been picked", Toast.LENGTH_LONG).show();
             }
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void addRoom(View view) {
         Toast.makeText(getApplicationContext(), "List is " + playerList.size(), Toast.LENGTH_LONG).show();
-        myRef.child("Room 2").child("Player List").setValue(playerList)
+        myRef.child("Room" + roomNum).child("Player List").setValue(playerList)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

@@ -14,8 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -88,7 +90,19 @@ public class MainActivity extends AppCompatActivity {
         roomNum = 2;
     }
     public void room3(View view){
-        roomNum = 3;
+        myRef.child("Room " + roomNum).child("Player List").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                 if(!task.isSuccessful())
+                 {
+                     Log.e("firebase", "Error getting data", task.getException());
+                 }
+                 else{
+                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                     String efby = String.valueOf(task.getResult().getValue());
+                 }
+            }
+        });
     }
 
 }

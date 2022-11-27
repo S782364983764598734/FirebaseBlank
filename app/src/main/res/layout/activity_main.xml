@@ -81,7 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:onClick="room3"
-        android:text="room 3"
+        android:text="addplayer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

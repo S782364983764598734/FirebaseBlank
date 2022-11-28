@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(draftList);
                 playerList.set(num, "Picked");
                 System.out.println(playerList);
-                joinRoom(view);
+                updateRoom(view);
             } else {
                 Toast.makeText(getApplicationContext(), "That player Has already been picked", Toast.LENGTH_LONG).show();
             }
@@ -77,9 +77,13 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    public void joinRoom(View view) {
+    public void updateRoom(View view) {
         myRef.child("Room " + roomNum).child("Player List").setValue(playerList);
 
+    }
+    public void joinRoom(View view)
+    {
+        myRef.child("Room " + roomNum).child("User List").push().setValue("New Player");
     }
 
     public void room1(View view) {

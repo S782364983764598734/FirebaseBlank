@@ -94,17 +94,16 @@ public class MainActivity extends AppCompatActivity {
         roomNum = 2;
     }
     public void room3(View view){
-        myRef.child("Room " + roomNum).child("Player List").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        myRef.child("room " + roomNum).child("Player List").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                 if(!task.isSuccessful())
-                 {
-                     Log.e("firebase", "Error getting data", task.getException());
-                 }
-                 else{
-                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
-                     String efby = String.valueOf(task.getResult().getValue());
-                 }
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String efby = snapshot.getValue(String.class);
+                Log.d(TAG, efby);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

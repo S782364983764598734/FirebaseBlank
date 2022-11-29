@@ -53,7 +53,7 @@
         android:id="@+id/room1butt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="room1"
+        android:onClick="room3"
         android:text="room 1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/room2butt"

@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (num >= 0 && num < playerList.size()) {
             if (!playerList.get(Integer.parseInt(choice.getText().toString())).equals("Picked")) {
-                TextView player = (TextView) findViewById(R.id.textView);
+
                 draftList.add(playerList.get(Integer.parseInt(choice.getText().toString())));
                 System.out.println(draftList);
                 playerList.set(num, "Picked");
@@ -94,16 +94,18 @@ public class MainActivity extends AppCompatActivity {
         roomNum = 2;
     }
     public void room3(View view){
+        TextView player = (TextView) findViewById(R.id.textView);
         myRef.child("room " + roomNum).child("Player List").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String efby = snapshot.getValue(String.class);
-                Log.d(TAG, efby);
+                String value = snapshot.getValue(String.class);
+
+                Log.d(TAG,"hello");
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(MainActivity.this, "Fail to get data.",Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -1,9 +1,12 @@
 package com.example.firebaseblank;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,85 +30,71 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
-    //List<String> myList;
-    List<String> playerList = Arrays.asList("Beal", "Booker", "Murray","Spongebob","Sandy Cheeks","Walter");
-    List<String> draftList;
-    int roomNum = 0;
+    EditText editText;
+    Button button;
+
+    String playerName = "";
+
+    FirebaseDatabase database;
+    DatabaseReference playerRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //myList = new ArrayList<>();
-        draftList = new ArrayList<>();
-    }
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
+        editText = findViewById(R.id.editText);
+        button = findViewById(R.id.button);
 
-    public void draftFunction(View view) {
-        EditText choice = (EditText) findViewById(R.id.editText);
-        int num = Integer.parseInt(choice.getText().toString());
+        database = FirebaseDatabase.getInstance();
 
-        if (num >= 0 && num < playerList.size()) {
-            if (!playerList.get(Integer.parseInt(choice.getText().toString())).equals("Picked")) {
-
-                draftList.add(playerList.get(Integer.parseInt(choice.getText().toString())));
-                System.out.println(draftList);
-                playerList.set(num, "Picked");
-                System.out.println(playerList);
-                updateRoom(view);
-            } else {
-                Toast.makeText(getApplicationContext(), "That player Has already been picked", Toast.LENGTH_LONG).show();
-            }
-        } else {
-            Toast.makeText(getApplicationContext(), "Please Select a Value within the List", Toast.LENGTH_LONG).show();
+        SharedPreferences preferences = getSharedPreferences("PREFS", 0);
+        playerName = preferences.getString ("playerName", "");
+        if(!playerName.equals(" ")){
+            playerRef = database.getReference("players/" + playerName);
+            addEventListener();
+            playerRef.setValue("");
         }
+
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                playerName = editText.getText().toString();
+                editText.setText("");
+                if(!playerName.equals(""))
+                {
+                    button.setText("LOGGING IN");
+                    button.setEnabled(false);
+                    playerRef = database.getReference("players/" + playerName);
+                    addEventListener();
+                    playerRef.setValue("");
+                }
+            }
+
+        });
     }
 
-    public void addRoom(View view) {
-        Toast.makeText(getApplicationContext(), "List is " + playerList.size(), Toast.LENGTH_LONG).show();
-        myRef.child("Room" + roomNum).child("Player List").setValue(playerList)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            //Toast.makeText(getApplicationContext(),"List is uploaded successfully",Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-    }
-
-    public void updateRoom(View view) {
-        myRef.child("Room " + roomNum).child("Player List").setValue(playerList);
-
-    }
-    public void joinRoom(View view)
-    {
-        myRef.child("Room " + roomNum).child("User List").push().setValue("New Player");
-    }
-
-    public void room1(View view) {
-        roomNum = 1;
-    }
-    public void room2(View view)
-    {
-        roomNum = 2;
-    }
-    public void room3(View view){
-        TextView player = (TextView) findViewById(R.id.textView);
-        myRef.child("room " + roomNum).child("Player List").addValueEventListener(new ValueEventListener() {
+    private void addEventListener() {
+        playerRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String value = snapshot.getValue(String.class);
+                if(!playerName.equals(""))
+                {
+                    SharedPreferences preferences = getSharedPreferences("PREFS",0);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("playerName", playerName);
+                    editor.apply();
 
-                Log.d(TAG,"hello");
+                    startActivity(new Intent(getApplicationContext(), MainActivity2.class));
+                    finish();
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(MainActivity.this, "Fail to get data.",Toast.LENGTH_LONG).show();
+                button.setText("Logging In");
+                button.setEnabled(false);
+                Toast.makeText(MainActivity.this, "Error!" , Toast.LENGTH_SHORT).show();
             }
         });
     }

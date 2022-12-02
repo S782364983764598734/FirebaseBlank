@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                button.setText("Logging In");
+                button.setText("LOG IN");
                 button.setEnabled(false);
                 Toast.makeText(MainActivity.this, "Error!" , Toast.LENGTH_SHORT).show();
             }

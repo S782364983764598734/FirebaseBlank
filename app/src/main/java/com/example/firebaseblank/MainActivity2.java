@@ -43,6 +43,7 @@ public class MainActivity2 extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
 
+        //get the player name and assign his room name to the player name
         SharedPreferences preferences = getSharedPreferences("PREFS",0);
         playerName = preferences.getString("playerName", "");
         roomName = playerName;
@@ -50,11 +51,13 @@ public class MainActivity2 extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         button = findViewById(R.id.button);
 
+        //all existing available rooms
         roomsList = new ArrayList<>();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //create room and add yourself as player1
                 button.setText("CREATING ROOM");
                 button.setEnabled(false);
                 roomName = playerName;
@@ -67,19 +70,21 @@ public class MainActivity2 extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //join an existing room and add yourself as player2
                 roomName = roomsList.get(position);
                 roomRef = database.getReference("rooms/" + roomName + "/player2");
                 addRoomEventListener();
                 roomRef.setValue(playerName);
             }
         });
-
+        //show if room is available
         addRoomsEventListener();
     }
     private void addRoomEventListener() {
         roomRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //join the room
                 button.setText("CREATE ROOM");
                 button.setEnabled(true);
                 Intent intent = new Intent(getApplicationContext(), MainActivity3.class);
@@ -89,6 +94,7 @@ public class MainActivity2 extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                //error
                 button.setText("CREATE ROOM");
                 button.setEnabled(true);
                 Toast.makeText(MainActivity2.this, "Error!", Toast.LENGTH_SHORT).show();
@@ -101,11 +107,11 @@ public class MainActivity2 extends AppCompatActivity {
         roomsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //how list of rooms
+                //show list of rooms
                 roomsList.clear();
                 Iterable<DataSnapshot> rooms = snapshot.getChildren();
                 for(DataSnapshot snapshot1 : rooms){
-                    roomsList.add(snapshot.getKey());
+                    roomsList.add(snapshot1.getKey());
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity2.this,
                             android.R.layout.simple_list_item_1, roomsList);
@@ -115,7 +121,7 @@ public class MainActivity2 extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                //nothing
+                //error nothing
             }
         });
     }

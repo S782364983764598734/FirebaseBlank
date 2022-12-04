@@ -15,7 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity3 extends AppCompatActivity {
+public class   MainActivity3 extends AppCompatActivity {
 
     Button button;
 
@@ -54,14 +54,15 @@ public class MainActivity3 extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //send message
                 button.setEnabled(false);
-                message = role + ":Poked";
+                message = role + ":Poked!";
                 messageRef.setValue(message);
             }
         });
 
         messageRef = database.getReference("rooms/" + roomName + "/message");
-        message = role + "Poked";
+        message = role + ":Poked!";
         messageRef.setValue(message);
         addRoomEventListener();
     }
@@ -70,6 +71,7 @@ public class MainActivity3 extends AppCompatActivity {
         messageRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //message recieved
                 if(role.equals("host")){
                     if(snapshot.getValue(String.class).contains("guest:")){
                         button.setEnabled(true);

@@ -48,9 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
 
+        //CHECK IF the player exists and get reference
         SharedPreferences preferences = getSharedPreferences("PREFS", 0);
         playerName = preferences.getString ("playerName", "");
-        if(!playerName.equals(" ")){
+        if(!playerName.equals("")){
             playerRef = database.getReference("players/" + playerName);
             addEventListener();
             playerRef.setValue("");
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                //loggin player in
                 playerName = editText.getText().toString();
                 editText.setText("");
                 if(!playerName.equals(""))
@@ -75,11 +77,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addEventListener() {
+        //read from database
         playerRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(!playerName.equals(""))
                 {
+                    //success - continue to the next screen after saving the player name
                     SharedPreferences preferences = getSharedPreferences("PREFS",0);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("playerName", playerName);
@@ -93,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 button.setText("LOG IN");
-                button.setEnabled(false);
+                button.setEnabled(true);
                 Toast.makeText(MainActivity.this, "Error!" , Toast.LENGTH_SHORT).show();
             }
         });
